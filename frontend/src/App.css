@@ -1,0 +1,125 @@
+/* General Body and App Styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #0b021a; /* Dark background to match animation */
+  color: #f4f7f9;
+  margin: 0;
+}
+
+/* --- Animated Background Styles --- */
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(45deg, #0b021a, #2a0b45, #5a1d5a);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+    z-index: -1;
+    transition: background 0.8s ease-in-out;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body.universe-mode-bg .animated-bg {
+    background: linear-gradient(45deg, #020038, #1c0a2e, #4a1d5a);
+}
+
+.particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    z-index: -2;
+    animation: float 30s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-1200px) rotate(720deg); opacity: 0; }
+}
+
+/* --- Main App Layout --- */
+.app-layout { display: flex; height: 100vh; }
+.tools-sidebar { width: 280px; flex-shrink: 0; background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px); border-right: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; overflow-y: auto; }
+.main-content-area { flex-grow: 1; padding: 20px; overflow-y: auto; }
+.app-header { text-align: center; margin-bottom: 20px; }
+.app-header h1 { color: #fff; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 8px #e8c76a, 0 0 12px #e8c76a; }
+.app-header p { color: #bdc3c7; margin-top: 0; }
+hr { border: none; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 20px 0; }
+
+/* --- Mode Switcher Styles --- */
+.mode-switcher { display: flex; justify-content: center; margin-bottom: 20px; background-color: rgba(0,0,0,0.2); padding: 5px; border-radius: 8px; max-width: 500px; margin-left: auto; margin-right: auto; }
+.mode-switcher button { flex-grow: 1; padding: 10px 15px; background: none; border: none; color: #bdc3c7; font-weight: bold; cursor: pointer; border-radius: 6px; transition: all 0.3s; }
+.mode-switcher button.active { background-color: #e8c76a; color: #0b021a; box-shadow: 0 2px 10px rgba(232, 199, 106, 0.3); }
+
+/* --- Alternate Universe Form Styles --- */
+.universe-form { background-color: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; max-width: 800px; margin: 20px auto; display: flex; flex-direction: column; gap: 15px; }
+.universe-form input, .universe-form textarea, .universe-form select { width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 5px; color: white; font-size: 1rem; box-sizing: border-box; }
+.universe-form label { font-weight: bold; color: #bdc3c7; }
+.universe-form button { padding: 12px; background-color: #4c1d95; color: #fff; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 1.1rem; transition: background-color 0.3s; }
+.universe-form button:hover { background-color: #5f25b8; }
+.universe-form select option { color: black; }
+
+/* --- Creative Tools & Annotations --- */
+.tools-sidebar h2 { font-size: 1.25rem; font-weight: bold; color: #e8c76a; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 10px; margin-bottom: 20px; }
+.tools-sidebar h3 { font-size: 1rem; font-weight: bold; margin-top: 20px; margin-bottom: 10px; }
+.color-palette { display: flex; gap: 10px; }
+.color-swatch { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+.color-swatch:hover { transform: scale(1.1); }
+.color-swatch.selected { border-color: #fff; box-shadow: 0 0 10px #fff; }
+.annotations-list { margin-top: 10px; display: flex; flex-direction: column; gap: 15px; }
+.annotation-item { background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 10px; }
+.annotation-item p { text-align: left; font-style: italic; color: #000; margin: 0; padding: 8px; border-radius: 4px; }
+.annotation-item textarea { width: 100%; margin-top: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; padding: 8px; color: white; font-size: 0.9rem; resize: vertical; }
+.annotation-tools { position: relative; }
+.annotation-buttons { display: flex; gap: 8px; margin-top: 10px; }
+.annotation-buttons button { flex-grow: 1; font-size: 0.8rem; padding: 5px 8px; background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #eee; border-radius: 5px; cursor: pointer; }
+.sticker-panel { position: absolute; top: 100%; left: 0; right: 0; margin-top: 5px; background: #2c3e50; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; padding: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 100; }
+.sticker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 10px; }
+.sticker { font-size: 2rem; text-align: center; cursor: pointer; transition: transform 0.2s; }
+.sticker:hover { transform: scale(1.2); }
+
+/* --- AI Response & PDF Viewer --- */
+.ai-response { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; max-width: 800px; margin: 20px auto; }
+.ai-response-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.ai-response-header h2 { margin: 0; color: #e8c76a; }
+.ai-response p { white-space: pre-wrap; font-family: 'Georgia', serif; line-height: 1.7; text-align: left; color: #e0e0e0; }
+.pdf-viewer-container { display: flex; flex-direction: column; align-items: center; margin-top: 30px; }
+.react-pdf__Page__canvas { border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
+.react-pdf__Page__textContent { position: absolute; top: 0; left: 0; right: 0; bottom: 0; color: transparent; user-select: text; }
+.react-pdf__Page { margin-bottom: 15px; position: relative; }
+
+/* --- UPDATED: Rewrite Modal Styles --- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+.modal-backdrop {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000; animation: fadeIn 0.3s ease-out;
+}
+.modal-content {
+    background: #1e1b2e; padding: 0; border-radius: 12px;
+    width: 90%; max-width: 500px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: scaleIn 0.3s ease-out; overflow: hidden;
+}
+.modal-header {
+    padding: 15px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.modal-header h3 { margin: 0; font-size: 1.2rem; color: #e8c76a; }
+.modal-close-button { background: none; border: none; color: #999; font-size: 1.5rem; cursor: pointer; line-height: 1; }
+.modal-close-button:hover { color: #fff; }
+.modal-body { padding: 20px; }
+.modal-body .selected-text { background-color: rgba(0,0,0,0.2); border-left: 3px solid #e8c76a; padding: 10px; font-style: italic; color: #eee; margin-bottom: 20px; }
+.modal-buttons { display: flex; gap: 10px; padding: 15px 20px; justify-content: flex-end; background-color: rgba(0,0,0,0.2); }
+.button-primary { background-color: #e8c76a; color: #0b021a; padding: 10px 20px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+.button-secondary { background-color: rgba(255, 255, 255, 0.1); color: #fff; padding: 10px 20px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 5px; cursor: pointer; }

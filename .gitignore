@@ -1,0 +1,9 @@
+# Dependencies
+node_modules/
+
+# Secret Files
+.env
+serviceAccountKey.json
+
+# Build output
+dist/

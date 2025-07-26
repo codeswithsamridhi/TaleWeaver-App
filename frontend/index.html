@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to TaleWeaver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <!-- UPDATED: Correct path to the CSS file -->
+    <link rel="stylesheet" href="/landing.css">
+    <style>
+        select option {
+            color: black;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <div class="animated-bg"></div>
+
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            
+            <div class="flex flex-col items-center justify-center text-center weaver-wrapper">
+                <h1 class="text-5xl font-bold mb-4 text-white" style="font-family: 'Cormorant Garamond', serif; text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 8px #e8c76a, 0 0 12px #e8c76a;">TaleWeaver</h1>
+                <p class="text-lg mb-8 text-gray-300" style="text-shadow: 0 0 8px rgba(255,255,255,0.3);">Your story, reimagined.</p>
+                <div class="weaver-container" id="weaver-container">
+                    <div class="ring ring-1"></div>
+                    <div class="ring ring-2"></div>
+                    <div class="weaver-core"></div>
+                    <div class="weaver-book">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-amber-200/80">
+                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            <circle cx="8" cy="8" r="1" fill="currentColor"></circle>
+                            <circle cx="16" cy="8" r="1" fill="currentColor"></circle>
+                            <path d="M9 14c.5 1 1.5 2 3 2s2.5-1 3-2" stroke-width="1.5"></path>
+                        </svg>
+                    </div>
+                    <div class="floor-shadow"></div>
+                </div>
+            </div>
+
+            <div class="form-container p-8 rounded-2xl">
+                <h2 class="text-2xl font-bold mb-6 text-center">Begin Your Journey</h2>
+                <form id="onboarding-form" class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-300">What should we call you?</label>
+                        <input type="text" id="name" class="mt-1 block w-full bg-white/10 border border-white/20 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300">Your Email ID</label>
+                        <input type="email" id="email" class="mt-1 block w-full bg-white/10 border border-white/20 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div>
+                        <label for="genre" class="block text-sm font-medium text-gray-300">Favorite Genre?</label>
+                        <select id="genre" class="mt-1 block w-full bg-white/10 border border-white/20 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option>💘 Romance</option>
+                            <option>🔍 Mystery</option>
+                            <option>🧝 Fantasy</option>
+                            <option>🎭 Drama</option>
+                            <option>😹 Comedy</option>
+                            <option>🧨 Thriller</option>
+                            <option>👑 Historical</option>
+                            <option>👻 Horror</option>
+                            <option>🌈 YA (Teen Fic)</option>
+                            <option>🤖 Sci-Fi</option>
+                            <option>🔮 Supernatural</option>
+                            <option>🎨 Slice of Life</option>
+                            <option>📚 Non-Fiction</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="mood" class="block text-sm font-medium text-gray-300">Current Reading Mood?</label>
+                        <select id="mood" class="mt-1 block w-full bg-white/10 border border-white/20 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option>🧁 Fluffy as a Marshmallow</option>
+                            <option>😎 Main Character Energy</option>
+                            <option>😭 Tears Loading...</option>
+                            <option>🧨 Drama Bomb Activated</option>
+                            <option>😂 Full Tu Jhakaas Comedy</option>
+                            <option>😵‍💫 Kya Hi Ho Raha Hai Bro?</option>
+                            <option>💀 Dark But Make It Aesthetic</option>
+                            <option>🧘‍♀️ Vibe Check: Passed</option>
+                            <option>🧚 Nani Ne Kaha Tha Yeh Jadoo Hai</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-md transition duration-300">Let's Begin</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const weaverContainer = document.getElementById('weaver-container');
+        window.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) * 2 - 1;
+            const y = (e.clientY / window.innerHeight) * 2 - 1;
+            const maxRotateY = 20;
+            const maxRotateX = 10;
+            const rotateY = x * maxRotateY;
+            const rotateX = y * -maxRotateX;
+            weaverContainer.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        const bg = document.querySelector('.animated-bg');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = Math.random() * 40 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.top = `${Math.random() * 100}%`;
+            particle.style.left = `${Math.random() * 100}%`;
+            const duration = Math.random() * 15 + 20;
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `${Math.random() * 10}s`;
+            bg.appendChild(particle);
+        }
+
+        const onboardingForm = document.getElementById('onboarding-form');
+        onboardingForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const genreSelect = document.getElementById('genre');
+            const genre = genreSelect.options[genreSelect.selectedIndex].text.substring(2).trim();
+            const moodSelect = document.getElementById('mood');
+            const mood = moodSelect.options[moodSelect.selectedIndex].text.substring(2).trim();
+            const userPreferences = { name: name || "Storyteller", genre: genre, mood: mood };
+            localStorage.setItem('userPreferences', JSON.stringify(userPreferences));
+            
+            // UPDATED: Redirect the user to the main application's new file name
+            window.location.href = '/app.html'; 
+        });
+    </script>
+</body>
+</html>

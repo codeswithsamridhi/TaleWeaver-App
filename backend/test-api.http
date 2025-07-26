@@ -1,0 +1,7 @@
+POST http://localhost:3000/api/rewrite
+Content-Type: application/json
+
+{
+    "storyContext": "This is the story so far...",
+    "userPrompt": "Make the dragon friendly."
+}
