@@ -163,6 +163,7 @@ function AlternateUniverseTool({ setAiResponse, setIsLoading, initialPrefs }) {
         setIsLoading(true);
         setAiResponse('');
         try {
+            // THIS IS THE FINAL CORRECTED URL
             const response = await axios.post('https://taleweaver-backend.onrender.com/api/generate', formData);
             setAiResponse(response.data.generatedStory);
         } catch (error) {
@@ -220,7 +221,6 @@ function CreativeTools({ onHighlight, annotations, onUpdateNote, selectedTextFor
   const handleSuggestQuote = async (index) => {
     try {
         const highlightedText = annotations[index].text;
-        // UPDATED: This now points to the live backend URL
         const response = await axios.post('https://taleweaver-backend.onrender.com/api/suggest-quote', { highlightedText });
         const suggestions = response.data.suggestions.split('\n').filter(q => q.trim() !== '');
         onUpdateNote(index, suggestions[Math.floor(Math.random() * suggestions.length)]);
@@ -259,8 +259,8 @@ function RewriteModal({ selectedText, onClose, onSubmit, initialPrefs }) {
     const [genre, setGenre] = useState(initialPrefs.genre);
     const [mood, setMood] = useState(initialPrefs.mood);
     const [customMood, setCustomMood] = useState('');
-    const moodLibrary = [ { emoji: '🧁', name: 'Fluffy as a Marshmallow' }, { emoji: '😎', name: 'Main Character Energy' }, { emoji: '😭', name: 'Tears Loading...' }, { emoji: '🧨', name: 'Drama Bomb Activated' }, { emoji: '😂', name: 'Full Tu Jhakaas Comedy' }, { emoji: '😵‍💫', name: 'Kya Hi Ho Raha Hai Bro?' }, { emoji: '💀', name: 'Dark But Make It Aesthetic' }, { emoji: '🧘‍♀️', name: 'Vibe Check: Passed' }, { emoji: '🧚', name: 'Nani Ne Kaha Tha Yeh Jadoo Hai' }, ];
-    const genreLibrary = [ { emoji: '💘', name: 'Romance' }, { emoji: '🔍', name: 'Mystery' }, { emoji: '🧝', name: 'Fantasy' }, { emoji: '🎭', name: 'Drama' }, { emoji: '😹', name: 'Comedy' }, { emoji: '🧨', name: 'Thriller' }, { emoji: '�', name: 'Historical' }, { emoji: '👻', name: 'Horror' }, { emoji: '🌈', name: 'YA (Teen Fic)' }, { emoji: '🤖', name: 'Sci-Fi' }, { emoji: '🔮', name: 'Supernatural' }, { emoji: '🎨', name: 'Slice of Life' }, { emoji: '📚', name: 'Non-Fiction' }, ];
+    const moodLibrary = [ { emoji: '🧁', name: 'Fluffy as a Marshmallow' }, { emoji: '😎', name: 'Main Character Energy' }, { emoji: '😭', name: 'Tears Loading...' }, { emoji: '🧨', name: 'Drama Bomb Activated' }, { emoji: '😂', name: 'Full Tu Jhakaas Comedy' }, { emoji: '😵‍�', name: 'Kya Hi Ho Raha Hai Bro?' }, { emoji: '💀', name: 'Dark But Make It Aesthetic' }, { emoji: '🧘‍♀️', name: 'Vibe Check: Passed' }, { emoji: '🧚', name: 'Nani Ne Kaha Tha Yeh Jadoo Hai' }, ];
+    const genreLibrary = [ { emoji: '💘', name: 'Romance' }, { emoji: '🔍', name: 'Mystery' }, { emoji: '🧝', name: 'Fantasy' }, { emoji: '🎭', name: 'Drama' }, { emoji: '😹', name: 'Comedy' }, { emoji: '🧨', name: 'Thriller' }, { emoji: '👑', name: 'Historical' }, { emoji: '👻', name: 'Horror' }, { emoji: '🌈', name: 'YA (Teen Fic)' }, { emoji: '🤖', name: 'Sci-Fi' }, { emoji: '🔮', name: 'Supernatural' }, { emoji: '🎨', name: 'Slice of Life' }, { emoji: '📚', name: 'Non-Fiction' }, ];
 
     const handleSubmit = () => onSubmit({ prompt, genre, mood, customMood });
 
