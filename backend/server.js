@@ -24,7 +24,7 @@ app.post('/api/rewrite', async (req, res) => {
     res.json({ success: true, rewrittenStory });
 
   } catch (error) {
-    console.error('AI Error:', error);
+    console.error('AI Rewrite Error:', error);
     res.status(500).json({ error: 'Failed to generate content from AI.' });
   }
 });
@@ -33,9 +33,6 @@ app.post('/api/rewrite', async (req, res) => {
 app.post('/api/generate', async (req, res) => {
     try {
         const { bookTitle, authorName, sceneDescription, prompt, mood, genre } = req.body;
-        if (!bookTitle || !authorName || !sceneDescription || !prompt || !mood || !genre) {
-            return res.status(400).json({ error: 'All fields are required.' });
-        }
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
         const aiPrompt = `You are a master storyteller with encyclopedic knowledge of all published books. A user wants you to generate an alternate story for a book they are reading. Book Title: ${bookTitle}, Author's Name: ${authorName}, Current Position: ${sceneDescription}, "What If" Scenario: ${prompt}, Desired Genre: ${genre}, Desired Mood: ${mood}. Your Mission: Write the ENTIRE rest of the story from this point. CRITICAL: You must perfectly mimic the original author's writing style. The story must be extremely long (10-15 new, full-length chapters), have a full plot arc, and a satisfying conclusion. Structure with clear chapter headings.`;
         const result = await model.generateContent(aiPrompt);
@@ -48,27 +45,16 @@ app.post('/api/generate', async (req, res) => {
     }
 });
 
-// --- NEW: API Endpoint for AI Quote Suggestions ---
+// Endpoint for AI quote suggestions
 app.post('/api/suggest-quote', async (req, res) => {
     try {
         const { highlightedText } = req.body;
-        if (!highlightedText) {
-            return res.status(400).json({ error: 'Highlighted text is required.' });
-        }
-
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-        
-        // A specific prompt just for generating annotation quotes
-        const aiPrompt = `A user has highlighted the following text from a story: "${highlightedText}". 
-        Generate exactly 3 short, clever, and poetic annotation quotes inspired by this text. The quotes should be suitable for a reader's personal notes.
-        Return only the 3 quotes, each on a new line. Do not add any other text or formatting.`;
-
+        const aiPrompt = `Based on this text: "${highlightedText}", generate 3 short, poetic annotation quotes.`;
         const result = await model.generateContent(aiPrompt);
         const response = await result.response;
         const suggestions = response.text();
-
         res.json({ success: true, suggestions });
-
     } catch (error) {
         console.error('AI Quote Suggestion Error:', error);
         res.status(500).json({ error: 'Failed to generate quote suggestions.' });
