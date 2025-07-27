@@ -10,19 +10,21 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 app.use(cors());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.send('TaleWeaver Backend is Live!');
+});
+
 // Endpoint for PDF-based rewrites
 app.post('/api/rewrite', async (req, res) => {
   try {
     const { selectedText, prompt, mood, genre } = req.body;
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-    const aiPrompt = `You are a master ghostwriter. Your task is to rewrite a book. The last scene was: "${selectedText}". The user's instruction is: "${prompt}". The desired genre is "${genre}" and mood is "${mood}". Write the ENTIRE rest of the book (at least 15-20 new, full-length chapters) with a full plot arc, mimicking the original author's style. Structure with clear chapter headings.`;
+    const aiPrompt = `You are a master ghostwriter. Your task is to rewrite a book. The last scene was: "${selectedText}". The user's instruction is: "${prompt}". The desired genre is "${genre}" and mood is "${mood}". Write the ENTIRE rest of the book (at least 10-15 new, full-length chapters) with a full plot arc, mimicking the original author's style. Structure with clear chapter headings.`;
     
     const result = await model.generateContent(aiPrompt);
     const response = await result.response;
     const rewrittenStory = response.text();
-
     res.json({ success: true, rewrittenStory });
-
   } catch (error) {
     console.error('AI Rewrite Error:', error);
     res.status(500).json({ error: 'Failed to generate content from AI.' });
@@ -49,29 +51,18 @@ app.post('/api/generate', async (req, res) => {
 app.post('/api/suggest-quote', async (req, res) => {
     try {
         const { highlightedText } = req.body;
-        if (!highlightedText) {
-            return res.status(400).json({ error: 'Highlighted text is required.' });
-        }
-
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-        
-        const aiPrompt = `A user has highlighted the following text from a story: "${highlightedText}". 
-        Generate exactly 3 short, clever, and poetic annotation quotes inspired by this text. The quotes should be suitable for a reader's personal notes.
-        Return only the 3 quotes, each on a new line. Do not add any other text or formatting.`;
-
+        const aiPrompt = `Based on this text: "${highlightedText}", generate 3 short, poetic annotation quotes.`;
         const result = await model.generateContent(aiPrompt);
         const response = await result.response;
         const suggestions = response.text();
-
         res.json({ success: true, suggestions });
-
     } catch (error) {
         console.error('AI Quote Suggestion Error:', error);
         res.status(500).json({ error: 'Failed to generate quote suggestions.' });
     }
 });
 
-
 app.listen(PORT, () => {
-  console.log(`TaleWeaver server is listening on http://localhost:${PORT}`);
+  console.log(`TaleWeaver server is listening on port ${PORT}`);
 });
