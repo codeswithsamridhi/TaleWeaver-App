@@ -102,39 +102,14 @@ function PersonalLibraryTool({ setAiResponse, setIsLoading, initialPrefs }) {
   const [annotations, setAnnotations] = useState([]);
   const [showRewriteModal, setShowRewriteModal] = useState(false);
 
-  // UPDATED: Modal state is now managed here in the parent component
-  const [modalData, setModalData] = useState({
-    prompt: '',
-    genre: initialPrefs.genre,
-    mood: initialPrefs.mood,
-    customMood: ''
-  });
-
   const handleFileChange = (e) => { setSelectedFile(e.target.files[0]); setSelectedText(''); setAiResponse(''); setAnnotations([]); };
   const handleTextSelect = () => { const text = window.getSelection().toString().trim(); if (text) setSelectedText(text); };
   const handleHighlight = (color) => { if (!selectedText) { alert("Please select text first!"); return; } setAnnotations([{ text: selectedText, color, note: '' }, ...annotations]); };
   const handleUpdateNote = (index, note) => { const newAnnotations = [...annotations]; newAnnotations[index].note = note; setAnnotations(newAnnotations); };
-  
-  const handleRewriteClick = () => { 
-    if(selectedText) {
-      // Reset modal data when opening
-      setModalData({
-          prompt: '',
-          genre: initialPrefs.genre,
-          mood: initialPrefs.mood,
-          customMood: ''
-      });
-      setShowRewriteModal(true);
-    } else {
-      alert("Please select text to rewrite.");
-    }
-  };
+  const handleRewriteClick = () => { if(selectedText) setShowRewriteModal(true); else alert("Please select text to rewrite."); };
 
-  // UPDATED: This function now uses its own state directly
-  const handleRewriteSubmit = async () => {
-    const { prompt, genre, mood, customMood } = modalData;
+  const handleRewriteSubmit = async ({ prompt, genre, mood, customMood }) => {
     if (!selectedText || !prompt) { alert("Please enter a rewrite instruction."); return; }
-    
     let finalMood = mood;
     const moodLibrary = [ { emoji: '🧁', name: 'Fluffy as a Marshmallow' }, { emoji: '😎', name: 'Main Character Energy' }, { emoji: '😭', name: 'Tears Loading...' }, { emoji: '🧨', name: 'Drama Bomb Activated' }, { emoji: '😂', name: 'Full Tu Jhakaas Comedy' }, { emoji: '😵‍💫', name: 'Kya Hi Ho Raha Hai Bro?' }, { emoji: '💀', name: 'Dark But Make It Aesthetic' }, { emoji: '🧘‍♀️', name: 'Vibe Check: Passed' }, { emoji: '🧚', name: 'Nani Ne Kaha Tha Yeh Jadoo Hai' }, ];
     if (mood === 'Surprise Me') finalMood = moodLibrary[Math.floor(Math.random() * moodLibrary.length)].name;
@@ -142,7 +117,8 @@ function PersonalLibraryTool({ setAiResponse, setIsLoading, initialPrefs }) {
     
     setIsLoading(true); setAiResponse(''); setShowRewriteModal(false);
     try {
-      const response = await axios.post('http://localhost:3000/api/rewrite', { selectedText, prompt, mood: finalMood, genre });
+      // UPDATED: Changed to the live backend URL
+      const response = await axios.post('https://taleweaver-backend.onrender.com/api/rewrite', { selectedText, prompt, mood: finalMood, genre });
       setAiResponse(response.data.rewrittenStory);
     } catch (error) {
       console.error("Error calling AI rewrite API:", error);
@@ -160,15 +136,7 @@ function PersonalLibraryTool({ setAiResponse, setIsLoading, initialPrefs }) {
         <input type="file" accept=".pdf" onChange={handleFileChange} />
         <div className="pdf-viewer-container"><PdfViewer file={selectedFile} /></div>
       </div>
-      {showRewriteModal && 
-        <RewriteModal 
-          selectedText={selectedText} 
-          onClose={() => setShowRewriteModal(false)} 
-          onSubmit={handleRewriteSubmit} 
-          modalData={modalData}
-          setModalData={setModalData}
-        />
-      }
+      {showRewriteModal && <RewriteModal selectedText={selectedText} onClose={() => setShowRewriteModal(false)} onSubmit={handleRewriteSubmit} initialPrefs={initialPrefs} />}
     </div>
   );
 }
@@ -183,7 +151,7 @@ function AlternateUniverseTool({ setAiResponse, setIsLoading, initialPrefs }) {
         genre: initialPrefs.genre,
         mood: initialPrefs.mood
     });
-    const moodLibrary = [ { emoji: '🧁', name: 'Fluffy as a Marshmallow' }, { emoji: '😎', name: 'Main Character Energy' }, { emoji: '😭', name: 'Tears Loading...' }, { emoji: '🧨', name: 'Drama Bomb Activated' }, { emoji: '😂', name: 'Full Tu Jhakaas Comedy' }, { emoji: '😵‍💫', name: 'Kya Hi Ho Raha Hai Bro?' }, { emoji: '💀', name: 'Dark But Make It Aesthetic' }, { emoji: '🧘‍♀️', name: 'Vibe Check: Passed' }, { emoji: '🧚', name: 'Nani Ne Kaha Tha Yeh Jadoo Hai' }, ];
+    const moodLibrary = [ { emoji: '🧁', name: 'Fluffy as a Marshmallow' }, { emoji: '😎', name: 'Main Character Energy' }, { emoji: '😭', name: 'Tears Loading...' }, { emoji: '🧨', name: 'Drama Bomb Activated' }, { emoji: '😂', name: 'Full Tu Jhakaas Comedy' }, { emoji: '😵‍�', name: 'Kya Hi Ho Raha Hai Bro?' }, { emoji: '💀', name: 'Dark But Make It Aesthetic' }, { emoji: '🧘‍♀️', name: 'Vibe Check: Passed' }, { emoji: '🧚', name: 'Nani Ne Kaha Tha Yeh Jadoo Hai' }, ];
     const genreLibrary = [ { emoji: '💘', name: 'Romance' }, { emoji: '🔍', name: 'Mystery' }, { emoji: '🧝', name: 'Fantasy' }, { emoji: '🎭', name: 'Drama' }, { emoji: '😹', name: 'Comedy' }, { emoji: '🧨', name: 'Thriller' }, { emoji: '👑', name: 'Historical' }, { emoji: '👻', name: 'Horror' }, { emoji: '🌈', name: 'YA (Teen Fic)' }, { emoji: '🤖', name: 'Sci-Fi' }, { emoji: '🔮', name: 'Supernatural' }, { emoji: '🎨', name: 'Slice of Life' }, { emoji: '📚', name: 'Non-Fiction' }, ];
 
 
@@ -196,7 +164,8 @@ function AlternateUniverseTool({ setAiResponse, setIsLoading, initialPrefs }) {
         setIsLoading(true);
         setAiResponse('');
         try {
-            const response = await axios.post('http://localhost:3000/api/generate', formData);
+            // UPDATED: Changed to the live backend URL
+            const response = await axios.post('https://taleweaver-backend.onrender.com/api/generate', formData);
             setAiResponse(response.data.generatedStory);
         } catch (error) {
             console.error("Error calling AI generation API:", error);
@@ -253,7 +222,8 @@ function CreativeTools({ onHighlight, annotations, onUpdateNote, selectedTextFor
   const handleSuggestQuote = async (index) => {
     try {
         const highlightedText = annotations[index].text;
-        const response = await axios.post('http://localhost:3000/api/suggest-quote', { highlightedText });
+        // UPDATED: Changed to the live backend URL
+        const response = await axios.post('https://taleweaver-backend.onrender.com/api/suggest-quote', { highlightedText });
         const suggestions = response.data.suggestions.split('\n').filter(q => q.trim() !== '');
         onUpdateNote(index, suggestions[Math.floor(Math.random() * suggestions.length)]);
     } catch (error) { alert("Sorry, couldn't get a suggestion from the AI."); }
@@ -286,15 +256,15 @@ function CreativeTools({ onHighlight, annotations, onUpdateNote, selectedTextFor
   );
 }
 
-// UPDATED: This is now a "dumb" component that receives state and functions as props
-function RewriteModal({ selectedText, onClose, onSubmit, modalData, setModalData }) {
+function RewriteModal({ selectedText, onClose, onSubmit, initialPrefs }) {
+    const [prompt, setPrompt] = useState('');
+    const [genre, setGenre] = useState(initialPrefs.genre);
+    const [mood, setMood] = useState(initialPrefs.mood);
+    const [customMood, setCustomMood] = useState('');
     const moodLibrary = [ { emoji: '🧁', name: 'Fluffy as a Marshmallow' }, { emoji: '😎', name: 'Main Character Energy' }, { emoji: '😭', name: 'Tears Loading...' }, { emoji: '🧨', name: 'Drama Bomb Activated' }, { emoji: '😂', name: 'Full Tu Jhakaas Comedy' }, { emoji: '😵‍💫', name: 'Kya Hi Ho Raha Hai Bro?' }, { emoji: '💀', name: 'Dark But Make It Aesthetic' }, { emoji: '🧘‍♀️', name: 'Vibe Check: Passed' }, { emoji: '🧚', name: 'Nani Ne Kaha Tha Yeh Jadoo Hai' }, ];
     const genreLibrary = [ { emoji: '💘', name: 'Romance' }, { emoji: '🔍', name: 'Mystery' }, { emoji: '🧝', name: 'Fantasy' }, { emoji: '🎭', name: 'Drama' }, { emoji: '😹', name: 'Comedy' }, { emoji: '🧨', name: 'Thriller' }, { emoji: '👑', name: 'Historical' }, { emoji: '👻', name: 'Horror' }, { emoji: '🌈', name: 'YA (Teen Fic)' }, { emoji: '🤖', name: 'Sci-Fi' }, { emoji: '🔮', name: 'Supernatural' }, { emoji: '🎨', name: 'Slice of Life' }, { emoji: '📚', name: 'Non-Fiction' }, ];
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setModalData(prevData => ({ ...prevData, [name]: value }));
-    };
+    const handleSubmit = () => onSubmit({ prompt, genre, mood, customMood });
 
     return (
         <div className="modal-backdrop" onClick={onClose}>
@@ -306,15 +276,15 @@ function RewriteModal({ selectedText, onClose, onSubmit, modalData, setModalData
                 <div className="modal-body">
                     <p className="selected-text">"{selectedText}"</p>
                     <div className="controls-grid">
-                      <div><label htmlFor="genre-select">Select a Genre:</label><select id="genre-select" name="genre" value={modalData.genre} onChange={handleChange}>{genreLibrary.map((g) => (<option key={g.name} value={g.name}>{g.emoji} {g.name}</option>))}</select></div>
-                      <div><label htmlFor="mood-select">Select a Mood:</label><select id="mood-select" name="mood" value={modalData.mood} onChange={handleChange}>{moodLibrary.map((m) => (<option key={m.name} value={m.name}>{m.emoji} {m.name}</option>))} <option value="Surprise Me">🎲 Bhai Jo Bhi Ho, Surprise Kar</option> <option value="Craft Your Own">✍️ Craft Your Own Mood</option></select></div>
+                      <div><label htmlFor="genre-select">Select a Genre:</label><select id="genre-select" value={genre} onChange={(e) => setGenre(e.target.value)}>{genreLibrary.map((g) => (<option key={g.name} value={g.name}>{g.emoji} {g.name}</option>))}</select></div>
+                      <div><label htmlFor="mood-select">Select a Mood:</label><select id="mood-select" value={mood} onChange={(e) => setMood(e.target.value)}>{moodLibrary.map((m) => (<option key={m.name} value={m.name}>{m.emoji} {m.name}</option>))} <option value="Surprise Me">🎲 Bhai Jo Bhi Ho, Surprise Kar</option> <option value="Craft Your Own">✍️ Craft Your Own Mood</option></select></div>
                     </div>
-                    {modalData.mood === 'Craft Your Own' && (<input type="text" name="customMood" placeholder="Type your own chaotic energy..." value={modalData.customMood} onChange={handleChange} style={{ marginTop: '10px', width: '100%', boxSizing: 'border-box' }}/>)}
-                    <textarea rows="3" name="prompt" placeholder="e.g., Make this scene more romantic." value={modalData.prompt} onChange={handleChange} />
+                    {mood === 'Craft Your Own' && (<input type="text" placeholder="Type your own chaotic energy..." value={customMood} onChange={(e) => setCustomMood(e.target.value)} style={{ marginTop: '10px', width: '100%', boxSizing: 'border-box' }}/>)}
+                    <textarea rows="3" placeholder="e.g., Make this scene more romantic." value={prompt} onChange={(e) => setPrompt(e.target.value)} />
                 </div>
                 <div className="modal-buttons">
                     <button onClick={onClose} className="button-secondary">Cancel</button>
-                    <button onClick={onSubmit} className="button-primary">Rewrite with AI</button>
+                    <button onClick={handleSubmit} className="button-primary">Rewrite with AI</button>
                 </div>
             </div>
         </div>
