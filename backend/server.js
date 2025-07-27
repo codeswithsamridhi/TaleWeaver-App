@@ -49,12 +49,22 @@ app.post('/api/generate', async (req, res) => {
 app.post('/api/suggest-quote', async (req, res) => {
     try {
         const { highlightedText } = req.body;
+        if (!highlightedText) {
+            return res.status(400).json({ error: 'Highlighted text is required.' });
+        }
+
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
-        const aiPrompt = `Based on this text: "${highlightedText}", generate 3 short, poetic annotation quotes.`;
+        
+        const aiPrompt = `A user has highlighted the following text from a story: "${highlightedText}". 
+        Generate exactly 3 short, clever, and poetic annotation quotes inspired by this text. The quotes should be suitable for a reader's personal notes.
+        Return only the 3 quotes, each on a new line. Do not add any other text or formatting.`;
+
         const result = await model.generateContent(aiPrompt);
         const response = await result.response;
         const suggestions = response.text();
+
         res.json({ success: true, suggestions });
+
     } catch (error) {
         console.error('AI Quote Suggestion Error:', error);
         res.status(500).json({ error: 'Failed to generate quote suggestions.' });
